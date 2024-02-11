@@ -1,0 +1,90 @@
+<div>
+
+  <div>
+    <button [routerLink]="['/home']" class="btn btn-primary">Home</button>
+    <h1>{{title}}</h1>
+
+    <router-outlet></router-outlet>
+  </div>
+<!-- Parent Component Template (app.component.html) -->
+<app-component-1 [SayMyname]="'Message from parent'" (EventEmit)="callFromChild($event)"></app-component-1>
+</div>
+<div>
+  {{title}}
+</div>
+
+<div>
+
+  <app-button-dispaly></app-button-dispaly>
+<app-button-component></app-button-component>
+  
+</div>
+
+
+
+<div>
+  <h5>Date of Now</h5>
+  <h3>{{toDate | date:'fullDate'}}</h3>
+</div>
+  <div>
+  <button appDisableButton >Click Me</button>
+  </div>
+
+  <div>
+    <h2 *ngFor="let item of List; let o=odd;let c =count">
+    
+      {{item|pipe}}
+      <h5>{{c}}</h5>
+      <h6>
+        Item {{item}} is {{o ? 'odd' : 'even'}}
+      </h6>
+    </h2>
+   
+  </div>
+
+  <img [src]="src" [alt]="altdata"/>
+  <label for="Name">Enter your Name</label>
+  <input id="Name" type="text"  [(ngModel)]="name"/>
+  <h1>Your name is {{name}}</h1>
+  
+  <div *ngIf="canYouBeilve">
+    <h6>It's Beleived</h6>
+  </div>
+
+  <label for="TestTemplate">Testing For Template</label>
+  <input type="text" id="TestTemplate" #testTemplate />
+  <button (click)="getValue(testTemplate)">Submit Value: {{testTemplate.value}}</button>
+  
+  <div *ngSwitch="itthisDaddy">
+
+    <p *ngSwitchCase="true">NO is Not</p>
+    <p *ngSwitchCase="false"> Yes Of COusre</p>
+    <p *ngSwitchDefault?>No Default</p>
+    
+  </div>
+
+  <div *ngIf="false;else  showElse">
+    <p>Sui Me</p>
+  </div>
+  <ng-template  #showElse>
+    <h4>Hai this WOrks</h4>
+  </ng-template>
+
+  <div [ngClass]="'primary big'">Sample Text</div>
+
+  <div [ngStyle]="{'color': true?'123px':'212px'}" >XSCSX</div>
+
+
+  <button appToggleDirective>Click me to see the magic</button>
+
+  <div>
+    <h2>
+      {{MyName | slice:3:8}}
+    </h2>
+  </div>
+
+
+  <div>
+    <h2>Reverse</h2>
+    <h4>{{MyName|pipe}}</h4>
+  </div>
