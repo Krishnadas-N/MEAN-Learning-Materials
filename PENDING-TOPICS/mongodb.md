@@ -131,3 +131,102 @@ Remember, using upsert can have performance implications in certain situations. 
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
+`$addToSet` is an update operator in MongoDB that adds elements to an array field only if they do not already exist in the array. It is particularly useful when dealing with arrays to ensure uniqueness of elements.
+
+Here's the syntax for using `$addToSet`:
+
+```javascript
+db.collection.updateOne(
+   <filter>,
+   { $addToSet: { <arrayField>: <value> } }
+)
+```
+
+- `<filter>`: Specifies the selection criteria for the update operation.
+- `<arrayField>`: The name of the array field to which you want to add elements.
+- `<value>`: The value or values to add to the array field.
+
+For example, consider a collection named `users` with documents that have an array field named `interests`. We want to add a new interest to the `interests` array for a specific user, but only if that interest does not already exist in the array. We can achieve this using `$addToSet`:
+
+```javascript
+db.users.updateOne(
+   { _id: ObjectId("...") }, // Filter to find the specific user
+   { $addToSet: { interests: "hiking" } }
+)
+```
+
+In this example, the value `"hiking"` will be added to the `interests` array of the user document specified by the filter `{ _id: ObjectId("...") }`, but only if `"hiking"` is not already present in the array. If `"hiking"` is already in the `interests` array, the array will remain unchanged.
+
+`$addToSet` can also add multiple values to an array. For example:
+
+```javascript
+db.users.updateOne(
+   { _id: ObjectId("...") }, // Filter to find the specific user
+   { $addToSet: { interests: { $each: ["hiking", "reading", "cooking"] } } }
+)
+```
+
+In this case, `"hiking"`, `"reading"`, and `"cooking"` will be added to the `interests` array, but only if they are not already present. If any of these values already exist in the array, they will not be added again.
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+A capped collection in MongoDB is a fixed-size collection that has a maximum size specified during its creation. Once the collection reaches its maximum size, MongoDB automatically removes older documents to make space for new ones. Capped collections have the following characteristics:
+
+1. **Fixed Size**: Capped collections have a maximum size, specified in bytes, during creation. Once the collection reaches this maximum size, MongoDB automatically removes older documents to make space for new ones.
+
+2. **Insertion Order**: Documents in a capped collection are stored in the order in which they were inserted. This order is maintained even as documents are added or removed from the collection.
+
+3. **Automatic Removal**: When a capped collection reaches its maximum size, MongoDB automatically removes older documents to make space for new ones. This automatic removal ensures that the collection does not exceed its specified size.
+
+4. **No Update Operations**: Once created, the size and structure of a capped collection cannot be changed. This means that documents in a capped collection cannot be updated or deleted, and new fields cannot be added to existing documents.
+
+5. **Indexed Operations**: Capped collections support all types of queries and indexed operations, including sorting, find, and update operations. However, it's important to note that the insertion order of documents is preserved regardless of any indexes that are present.
+
+Capped collections are commonly used for the following purposes:
+
+- **Logging**: Storing log messages or audit trails where only the most recent data is relevant.
+- **Caching**: Storing frequently accessed data for fast retrieval.
+- **Event Streams**: Storing event streams or change logs where historical data is less important than recent data.
+
+To create a capped collection in MongoDB, you can use the `db.createCollection()` method with the `capped: true` option and specify the maximum size of the collection in bytes. For example:
+
+```javascript
+db.createCollection("myCappedCollection", { capped: true, size: 100000 })
+```
+
+This command creates a capped collection named "myCappedCollection" with a maximum size of 100,000 bytes (approximately 100 KB).
+
+
+
+
+GridFS is a specification and feature implemented in MongoDB that allows you to store and retrieve large files, such as images, videos, audio files, and other binary data, in a more efficient manner than storing them directly in documents. It is particularly useful when dealing with files that exceed the 16 MB document size limit in MongoDB.
+
+GridFS achieves this by dividing large files into smaller chunks, typically 255 kilobytes (KB) in size by default, and storing each chunk as a separate document in two collections:
+
+1. **chunks collection**: This collection stores the actual data of the file in chunks. Each document in the chunks collection represents a chunk of the file's data and contains a binary data field with the chunk's data.
+
+2. **files collection**: This collection stores metadata about the file, such as its filename, size, content type, and any other user-defined metadata. Each document in the files collection represents a file and contains references to the chunks that make up the file.
+
+By dividing files into smaller chunks and storing them in separate documents, GridFS allows MongoDB to efficiently store and retrieve large files while still leveraging MongoDB's features such as replication, sharding, and indexing.
+
+Here's an overview of how GridFS works:
+
+1. **Storing Files**:
+   - When you store a file using GridFS, the file is divided into smaller chunks, typically 255 KB in size by default.
+   - Each chunk is stored as a separate document in the chunks collection.
+   - Metadata about the file, such as its filename, size, content type, and any user-defined metadata, is stored as a document in the files collection.
+
+2. **Retrieving Files**:
+   - When you retrieve a file from GridFS, MongoDB retrieves the metadata document from the files collection.
+   - MongoDB then retrieves the chunks that make up the file from the chunks collection and concatenates them to reconstruct the original file.
+
+3. **Managing Files**:
+   - GridFS provides APIs and utilities for storing, retrieving, and managing files, including methods for uploading, downloading, deleting, and querying files based on their metadata.
+
+GridFS is particularly useful for storing and retrieving large files in MongoDB, as it allows you to work with files that exceed the size limit of a single document. It is commonly used in applications that need to store and serve binary data, such as content management systems, media streaming platforms, and file storage services.

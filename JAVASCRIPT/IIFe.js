@@ -12,3 +12,9 @@
 // div.setAttribute('data-id','SayMyName');
 // console.log(div);
 console.log(process.argv)
+
+
+
+const current = new Date();
+
+const fotyfive = new Date(current.getTime() - 45*24*60*60*1000)
