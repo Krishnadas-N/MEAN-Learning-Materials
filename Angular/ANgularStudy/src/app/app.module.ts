@@ -11,6 +11,9 @@ import { ToggleDirectiveDirective } from './Directive/toggle-directive.directive
 import { ButtonDispalyComponent } from './Component/button-dispaly/button-dispaly.component';
 import { ButtonComponentComponent } from './Component/button-component/button-component.component';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { UserEffects } from './STORE/user.effects';
+import { LazyComponentComponent } from './Lazy/lazy-component/lazy-component.component';
 
 @NgModule({
   declarations: [
@@ -21,13 +24,15 @@ import { StoreModule } from '@ngrx/store';
     Component1Component,
     ToggleDirectiveDirective,
     ButtonDispalyComponent,
-    ButtonComponentComponent
+    ButtonComponentComponent,
+    LazyComponentComponent
   ],
   imports: [
     FormsModule,
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({}, {})
+    StoreModule.forRoot({}, {}),
+    EffectsModule.forRoot([UserEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]//Indicates starting of components

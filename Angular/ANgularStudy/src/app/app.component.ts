@@ -36,4 +36,9 @@ export class AppComponent implements OnInit{
     this.title=event.value
   }
 
+
+
+
+  data:boolean=true;
+
 }
